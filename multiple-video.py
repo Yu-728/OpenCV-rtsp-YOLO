@@ -44,7 +44,7 @@ class MultipleTarget:
 
             # Inference
             results = self.model(frame)
-            pd = results.pandas().xyxy[0]
+            pd = results.pandas().xyxy[0]   # tensor-->pandas的DataFrame
             # 取出对应标签的list
             person_list = pd[pd['name'] == 'person'].to_numpy()
             bus_list = pd[pd['name'] == 'bus'].to_numpy()
