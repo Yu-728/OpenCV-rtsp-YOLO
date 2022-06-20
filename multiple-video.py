@@ -22,10 +22,10 @@ class MultipleTarget:
 
     def draw(self, list_temp, image_temp):
         for temp in list_temp:
-            name = temp[6]      # 取出标签名
-            temp = temp[:4].astype('int')   # 转成int加快计算
+            name = temp[6]  # 取出标签名
+            temp = temp[:4].astype('int')  # 转成int加快计算
             cv.rectangle(image_temp, (temp[0], temp[1]), (temp[2], temp[3]), (0, 0, 255), 3)  # 框出识别物体
-            cv.putText(image_temp, name, (int(temp[0]-10), int(temp[1]-10)), cv.FONT_ITALIC, 1, (0, 255, 0), 2)
+            cv.putText(image_temp, name, (int(temp[0] - 10), int(temp[1] - 10)), cv.FONT_ITALIC, 1, (0, 255, 0), 2)
 
     def detect(self):
         """
@@ -44,7 +44,7 @@ class MultipleTarget:
 
             # Inference
             results = self.model(frame)
-            pd = results.pandas().xyxy[0]   # tensor-->pandas的DataFrame
+            pd = results.pandas().xyxy[0]  # tensor-->pandas的DataFrame
             # 取出对应标签的list
             person_list = pd[pd['name'] == 'person'].to_numpy()
             bus_list = pd[pd['name'] == 'bus'].to_numpy()
