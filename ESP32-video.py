@@ -1,6 +1,9 @@
 import time
+
+import numpy as np
 import torch
 import cv2 as cv
+import urllib.request
 
 
 class MultipleTarget:
@@ -14,12 +17,12 @@ class MultipleTarget:
         # 设置阈值
         self.model.conf = 0.52  # confidence threshold (0-1)
         self.model.iou = 0.45  # NMS IoU threshold (0-1)
-        # 加载摄像头
+        # 加载url
         self.url = url
-        self.cap = cv.VideoCapture(self.url)
-        if not self.cap.isOpened():
-            print("Cannot open camera")
-            exit()
+        # self.cap = cv.VideoCapture(self.url)
+        # if not self.cap.isOpened():
+        #     print("Cannot open camera")
+        #     exit()
 
     def draw(self, list_temp, image_temp):
         for temp in list_temp:
@@ -33,11 +36,11 @@ class MultipleTarget:
         目标检测
         """
         while True:
-            ret, frame = self.cap.read()
-            # 如果正确读取帧，ret为True
-            if not ret:
-                print("Can't receive frame (stream end?). Exiting ...")
-                break
+            # 读取ESP32视频流
+            imgResp = urllib.request.urlopen(self.url)
+            imgNp = np.array(bytearray(imgResp.read()), dtype=np.uint8)
+            img = cv.imdecode(imgNp, -1)
+            frame = cv.flip(img, 1)
             # frame = cv.flip(frame, 1)
 
             # FPS计算time.start
@@ -70,10 +73,10 @@ class MultipleTarget:
             if cv.waitKey(10) & 0xFF == ord('q'):
                 break
 
-        self.cap.release()
+        # self.cap.release()
         cv.destroyAllWindows()
 
 
-url = 'rtsp://admin:admin@192.168.43.229:8554/live'
+url = 'http://192.168.43.69/cam-hi.jpg'  # 改成自己的ip地址+/cam-hi.jpg
 test = MultipleTarget(url)
 test.detect()
