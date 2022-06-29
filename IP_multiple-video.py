@@ -17,6 +17,7 @@ class MultipleTarget:
         # 加载摄像头
         self.url = url
         self.cap = cv.VideoCapture(self.url)
+        self.cap.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc('M', 'J', 'P', 'G'))
         if not self.cap.isOpened():
             print("Cannot open camera")
             exit()

@@ -16,13 +16,15 @@ class MultipleTarget:
         self.model.iou = 0.45  # NMS IoU threshold (0-1)
         # 加载摄像头
         self.cap = cv.VideoCapture(0)
+        # 改成MJPG格式
+        # self.cap.set(6, cv.VideoWriter.fourcc('M', 'J', 'P', 'G'))
         if not self.cap.isOpened():
             print("Cannot open camera")
             exit()
 
     def draw(self, list_temp, image_temp):
         for temp in list_temp:
-            name = temp[6]  # 取出标签名
+            name = temp[6]  # 取出label
             temp = temp[:4].astype('int')  # 转成int加快计算
             cv.rectangle(image_temp, (temp[0], temp[1]), (temp[2], temp[3]), (0, 0, 255), 3)  # 框出识别物体
             cv.putText(image_temp, name, (int(temp[0] - 10), int(temp[1] - 10)), cv.FONT_ITALIC, 1, (0, 255, 0), 2)
@@ -37,6 +39,7 @@ class MultipleTarget:
             if not ret:
                 print("Can't receive frame (stream end?). Exiting ...")
                 break
+            frame = cv.resize(frame, (640, 480))
             frame = cv.flip(frame, 1)
 
             # FPS计算time.start

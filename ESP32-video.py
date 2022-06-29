@@ -40,6 +40,7 @@ class MultipleTarget:
             imgResp = urllib.request.urlopen(self.url)
             imgNp = np.array(bytearray(imgResp.read()), dtype=np.uint8)
             img = cv.imdecode(imgNp, -1)
+            img = cv.resize(img, (640, 480))
             frame = cv.flip(img, 1)
             # frame = cv.flip(frame, 1)
 
@@ -60,10 +61,10 @@ class MultipleTarget:
             fps = 1 / (end_time - start_time)
 
             # 控制台显示
-            # results.print()  # or .show(), .save(), .crop(), .pandas(), etc.
-            # print(results.xyxy[0])  # img1 predictions (tensor)
-            # print('----------------')
-            # print(results.pandas().xyxy[0])  # img1 predictions (pandas)
+            results.print()  # or .show(), .save(), .crop(), .pandas(), etc.
+            print(results.xyxy[0])  # img1 predictions (tensor)
+            print('----------------')
+            print(results.pandas().xyxy[0])  # img1 predictions (pandas)
 
             # FPS显示
             cv.putText(frame, 'FPS:' + str(int(fps)), (30, 50), cv.FONT_ITALIC, 1, (0, 255, 0), 2)
