@@ -1,5 +1,5 @@
 """
-读取ESP32发送的视频流，使用opencv解析视频流格式
+读取ESP32发送的视频流，使用opencv解析视频流格式，TCP协议
 """
 import urllib.request
 import cv2

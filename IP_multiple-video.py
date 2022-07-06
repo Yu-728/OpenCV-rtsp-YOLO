@@ -1,3 +1,7 @@
+"""
+单进程能读到图像会卡死
+"""
+
 import time
 import torch
 import cv2 as cv
